@@ -78,6 +78,50 @@ const CreateProduct = (props) => {
     let saveProduct = (event) => {
         event.preventDefault();
         // TODO : write your code here to save the product
+
+        const productName = document.getElementById('product-name').value;
+        const productSKU = document.getElementById('product-sku').value;
+        const description = document.getElementById('product-description').value;
+
+        // Prepare data for product variants
+        const productVariantPricesData = productVariantPrices.map((productVariantPrice) => {
+        const priceInput = document.getElementById(`price-${productVariantPrice.title}`);
+        const stockInput = document.getElementById(`stock-${productVariantPrice.title}`);
+        return {
+        title: productVariantPrice.title,
+        price: parseFloat(priceInput.value),
+        stock: parseFloat(stockInput.value)
+        };
+    });
+    const mediaData = [];
+    // Prepare data for product
+  const productData = {
+    title: productName,
+    sku: productSKU,
+    description: description,
+    variantPrices: productVariantPricesData,
+    media: mediaData
+  };
+
+  try {
+    const response = await fetch('/api/products', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(productData)
+    });
+
+    if (response.ok) {
+      // Product saved successfully, perform any necessary actions
+      console.log('Product saved successfully');
+    } else {
+      // Handle the error case
+      console.error('Failed to save the product');
+    }
+  } catch (error) {
+    console.error('An error occurred while saving the product:', error);
+  }
     }
 
 

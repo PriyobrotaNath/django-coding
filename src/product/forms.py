@@ -12,3 +12,8 @@ class VariantForm(ModelForm):
             'description': Textarea(attrs={'class': 'form-control'}),
             'active': CheckboxInput(attrs={'class': 'form-check-input', 'id': 'active'})
         }
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model = Variant
+        fields = '__all__'
